@@ -395,15 +395,25 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         }
       } else {
-        addOrUpdateMessage('Sorry, I encountered an error processing your message. Please check if API keys are configured.', 'assistant');
+        // Check if it's an API key issue
+        if (result.detail && result.detail.includes('API key')) {
+          addOrUpdateMessage('Please configure your API keys in Settings to use the AI assistant.', 'assistant');
+          showNotification('API keys required. Click Settings to configure.', 'warning');
+        } else {
+          addOrUpdateMessage('I encountered an error processing your message. Please configure your API keys in Settings.', 'assistant');
+        }
       }
     } catch (error) {
       console.error('Error sending message:', error);
-      if (error.message.includes('API key')) {
+      // More specific error handling
+      if (error.name === 'TypeError' && error.message.includes('fetch')) {
+        addOrUpdateMessage('Cannot connect to the server. Please check your internet connection.', 'assistant');
+      } else if (error.message.includes('API key')) {
         addOrUpdateMessage('Please configure your API keys in Settings to use the AI assistant.', 'assistant');
         showNotification('API keys required. Click Settings to configure.', 'warning');
       } else {
-        addOrUpdateMessage('Sorry, I couldn\'t connect to the server. Please check if the server is running and API keys are configured.', 'assistant');
+        addOrUpdateMessage('Please configure your API keys in Settings to start chatting.', 'assistant');
+        showNotification('Configure API keys in Settings to get started.', 'info');
       }
     }
   };
