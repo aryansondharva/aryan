@@ -486,34 +486,17 @@ import json
 # Render deployment configuration
 import os
 import uvicorn
-from fastapi import FastAPI
 
-# Create FastAPI app instance
-app = FastAPI()
-
-@app.get("/")
-def root():
-    return {"message": "Hello from FastAPI on Render!"}
-
-def start_server():
-    """Start the FastAPI server with proper configuration for Render."""
-    port = int(os.environ.get("PORT", 8000))  # Use Render's PORT or fallback to 8000
-    host = "0.0.0.0"
-    
-    print(f"Starting FastAPI server on {host}:{port}")
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 8000))
+    print(f"Starting FastAPI server on 0.0.0.0:{port}")
     print(f"Environment PORT: {os.environ.get('PORT', 'Not set')}")
     
-    config = uvicorn.Config(
-        app=app,
-        host=host,
+    uvicorn.run(
+        "main:app",
+        host="0.0.0.0",
         port=port,
         log_level="info",
         access_log=True,
-        loop="asyncio"
+        reload=False
     )
-    
-    server = uvicorn.Server(config)
-    server.run()
-
-if __name__ == "__main__":
-    start_server()
