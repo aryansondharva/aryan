@@ -10,7 +10,7 @@ from main import app
 
 def main():
     """Start the server with explicit configuration."""
-    port = int(os.environ.get("PORT", 0000))
+    port = int(os.environ.get("PORT", 8000))
     host = "0.0.0.0"
     
     print(f"=== Render Deployment Startup ===")
