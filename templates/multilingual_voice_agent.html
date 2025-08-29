@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multilingual Voice Agent</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #ffffff;
+            --primary-gradient: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            --secondary-gradient: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            --background: #1a1a1a;
+            --surface: rgba(45, 55, 72, 0.8);
+            --surface-glass: rgba(255, 255, 255, 0.05);
+            --user-bubble: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            --agent-bubble: rgba(45, 55, 72, 0.6);
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --text-light: rgba(255, 255, 255, 0.95);
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.3);
+            --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --record-gradient: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(66, 153, 225, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(49, 130, 206, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(45, 55, 72, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .container {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-glass);
+            max-width: 700px;
+            width: 95%;
+            text-align: center;
+            z-index: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--user-bubble);
+            border-radius: 24px 24px 0 0;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .title-icon {
+            background: var(--user-bubble);
+            border-radius: 16px;
+            padding: 12px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(66, 153, 225, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .input-section {
+            margin-bottom: 40px;
+            display: grid;
+            gap: 24px;
+        }
+
+        .input-group {
+            text-align: left;
+            position: relative;
+        }
+
+        .input-group-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            z-index: 2;
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+
+        .label-icon {
+            color: #4299e1;
+            font-size: 1rem;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 16px 48px 16px 20px;
+            border: 2px solid var(--border-glass);
+            border-radius: 16px;
+            background: var(--surface-glass);
+            color: var(--text-primary);
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+            position: relative;
+        }
+
+        .input-with-icon {
+            padding-left: 48px !important;
+        }
+
+        input[type="text"]::placeholder {
+            color: var(--text-secondary);
+        }
+
+        input[type="text"]:focus, select:focus {
+            outline: none;
+            background: var(--surface);
+            border-color: rgba(66, 153, 225, 0.5);
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        select option {
+            background: var(--background);
+            color: var(--text-primary);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 28px;
+            border: 2px solid var(--border-glass);
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 140px;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover .btn-icon {
+            transform: scale(1.1);
+        }
+
+        .btn-primary {
+            background: var(--user-bubble);
+            color: var(--text-primary);
+            box-shadow: 0 8px 32px rgba(66, 153, 225, 0.4);
+            border-color: rgba(66, 153, 225, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            box-shadow: 0 8px 32px rgba(45, 55, 72, 0.4);
+            border-color: var(--border-glass);
+        }
+
+        .btn-accent {
+            background: var(--agent-bubble);
+            color: var(--text-primary);
+            box-shadow: 0 8px 32px rgba(45, 55, 72, 0.4);
+            border-color: var(--border-glass);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 48px rgba(66, 153, 225, 0.6);
+            border-color: rgba(66, 153, 225, 0.5);
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 12px 48px rgba(66, 153, 225, 0.7);
+        }
+
+        .btn-secondary:hover {
+            box-shadow: 0 12px 48px rgba(45, 55, 72, 0.6);
+        }
+
+        .btn-accent:hover {
+            box-shadow: 0 12px 48px rgba(45, 55, 72, 0.6);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: var(--surface-glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+        }
+
+        .status.processing {
+            background: rgba(66, 153, 225, 0.1);
+            border: 1px solid rgba(66, 153, 225, 0.3);
+            color: #4299e1;
+        }
+
+        .status.success {
+            background: rgba(72, 187, 120, 0.1);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+            color: #48bb78;
+        }
+
+        .status.error {
+            background: rgba(245, 101, 101, 0.1);
+            border: 1px solid rgba(245, 101, 101, 0.3);
+            color: #f56565;
+        }
+
+        .audio-player {
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        audio {
+            width: 100%;
+            border-radius: 12px;
+            background: var(--surface-glass);
+            border: 1px solid var(--border-glass);
+        }
+
+        .example {
+            margin-top: 30px;
+            padding: 20px;
+            background: var(--surface-glass);
+            border-radius: 12px;
+            border: 1px solid var(--border-glass);
+            border-left: 4px solid #4299e1;
+        }
+
+        .example h3 {
+            color: #4299e1;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .example-flow {
+            text-align: left;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border-glass);
+            border-radius: 50%;
+            border-top-color: #4299e1;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .voice-personas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .persona-btn {
+            padding: 12px 16px;
+            border: 2px solid var(--border-glass);
+            border-radius: 24px;
+            background: var(--surface-glass);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            font-family: inherit;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .persona-btn.active {
+            background: rgba(66, 153, 225, 0.2);
+            border-color: #4299e1;
+            color: #4299e1;
+            box-shadow: 0 4px 16px rgba(66, 153, 225, 0.3);
+            transform: scale(1.05);
+        }
+
+        .persona-btn:hover {
+            background: var(--surface);
+            color: var(--text-primary);
+            border-color: rgba(66, 153, 225, 0.3);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(66, 153, 225, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            <div class="title-icon">
+                <i class="fas fa-globe-americas"></i>
+            </div>
+            Multilingual Voice Agent
+        </h1>
+        <p class="subtitle">Speak in one language, hear it in another with different personas!</p>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="inputText">
+                    <i class="fas fa-keyboard label-icon"></i>
+                    Enter your text:
+                </label>
+                <div style="position: relative;">
+                    <i class="fas fa-edit input-group-icon"></i>
+                    <input type="text" id="inputText" class="input-with-icon" placeholder="e.g., Hello, how are you?" />
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label for="targetLanguage">
+                    <i class="fas fa-language label-icon"></i>
+                    Translate to:
+                </label>
+                <div style="position: relative;">
+                    <i class="fas fa-globe input-group-icon"></i>
+                    <select id="targetLanguage" class="input-with-icon">
+                    <option value="japanese">Japanese (日本語)</option>
+                    <option value="spanish">Spanish (Español)</option>
+                    <option value="french">French (Français)</option>
+                    <option value="german">German (Deutsch)</option>
+                    <option value="hindi">Hindi (हिन्दी)</option>
+                    <option value="english">English</option>
+                </select>
+                </div>
+            </div>
+            
+            <div class="input-group">
+                <label>
+                    <i class="fas fa-user-friends label-icon"></i>
+                    Choose Voice Persona:
+                </label>
+                <div class="voice-personas">
+                    <button class="persona-btn active" data-persona="girl">
+                        <i class="fas fa-female"></i>
+                        Girl
+                    </button>
+                    <button class="persona-btn" data-persona="shinchan">
+                        <i class="fas fa-child"></i>
+                        Shinchan
+                    </button>
+                
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn btn-primary" id="translateBtn">
+                <i class="fas fa-sync-alt btn-icon"></i>
+                Translate & Speak
+            </button>
+            <br>
+            <button class="btn btn-accent" id="playBtn" disabled>
+                <i class="fas fa-play btn-icon"></i>
+                Play Audio
+            </button>
+        </div>
+        
+        <div class="status" id="status">
+            <i class="fas fa-info-circle" style="margin-right: 8px;"></i>
+            Ready to translate and speak! Enter text above or record your voice.
+        </div>
+        
+        <div class="audio-player" id="audioPlayer" style="display: none;">
+            <audio controls id="audioElement">
+                Your browser does not support the audio element.
+            </audio>
+        </div>
+        
+        
+    </div>
+
+    <script>
+        let selectedPersona = 'girl';
+        let isRecording = false;
+        let mediaRecorder;
+        let audioChunks = [];
+
+        // Persona selection
+        document.querySelectorAll('.persona-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.persona-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                selectedPersona = btn.dataset.persona;
+            });
+        });
+
+        let currentAudioUrl = null;
+
+        // Translate and speak functionality
+        document.getElementById('translateBtn').addEventListener('click', async () => {
+            const text = document.getElementById('inputText').value.trim();
+            const targetLanguage = document.getElementById('targetLanguage').value;
+            
+            if (!text) {
+                showStatus('Please enter some text to translate!', 'error');
+                return;
+            }
+            
+            showStatus('Translating and generating voice...', 'processing');
+            
+            try {
+                const response = await fetch('/multilingual_voice', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        text: text,
+                        target_language: targetLanguage,
+                        persona: selectedPersona
+                    })
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    showStatus(`Translated: "${result.translated_text}"`, 'success');
+                    
+                    if (result.audio_url) {
+                        currentAudioUrl = result.audio_url;
+                        document.getElementById('playBtn').disabled = false;
+                        // Auto-play the translated voice immediately
+                        playTranslatedAudio();
+                    }
+                } else {
+                    const error = await response.json();
+                    showStatus(`Error: ${error.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus('Connection error. Please try again.', 'error');
+            }
+        });
+
+        // Record voice functionality
+        document.getElementById('recordBtn').addEventListener('click', async () => {
+            if (!isRecording) {
+                try {
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    mediaRecorder = new MediaRecorder(stream);
+                    audioChunks = [];
+                    
+                    mediaRecorder.ondataavailable = event => {
+                        audioChunks.push(event.data);
+                    };
+                    
+                    mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+                        await processRecordedAudio(audioBlob);
+                    };
+                    
+                    mediaRecorder.start();
+                    isRecording = true;
+                    document.getElementById('recordBtn').innerHTML = '<span>⏹️</span> Stop Recording';
+                    showStatus('Recording... Click stop when finished.', 'processing');
+                } catch (error) {
+                    showStatus('Microphone access denied or not available.', 'error');
+                }
+            } else {
+                mediaRecorder.stop();
+                isRecording = false;
+                document.getElementById('recordBtn').innerHTML = '<span>🎤</span> Record Voice';
+                showStatus('Processing recorded audio...', 'processing');
+            }
+        });
+
+        // Process recorded audio
+        async function processRecordedAudio(audioBlob) {
+            const formData = new FormData();
+            formData.append('audio', audioBlob, 'recorded_audio.wav');
+            formData.append('target_language', document.getElementById('targetLanguage').value);
+            formData.append('persona', selectedPersona);
+            
+            try {
+                const response = await fetch('/process_voice_translation', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (response.ok) {
+                    const result = await response.json();
+                    document.getElementById('inputText').value = result.original_text;
+                    showStatus(`Heard: "${result.original_text}" → Translated: "${result.translated_text}"`, 'success');
+                    
+                    if (result.audio_url) {
+                        currentAudioUrl = result.audio_url;
+                        document.getElementById('playBtn').disabled = false;
+                        // Auto-play the translated voice immediately
+                        playTranslatedAudio();
+                    }
+                } else {
+                    const error = await response.json();
+                    showStatus(`Error: ${error.error}`, 'error');
+                }
+            } catch (error) {
+                showStatus('Error processing audio. Please try again.', 'error');
+            }
+        }
+
+        // Play translated audio function
+        function playTranslatedAudio() {
+            if (currentAudioUrl) {
+                const audio = new Audio(currentAudioUrl);
+                audio.play().catch(error => {
+                    console.error('Error playing audio:', error);
+                    showStatus('Error playing audio. Please try again.', 'error');
+                });
+            }
+        }
+
+        // Play audio functionality
+        document.getElementById('playBtn').addEventListener('click', () => {
+            playTranslatedAudio();
+        });
+
+        // Show status messages
+        function showStatus(message, type = '') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            
+            if (type === 'processing') {
+                status.innerHTML = `<span class="loading"></span> ${message}`;
+            }
+        }
+
+        // Show audio player
+        function showAudioPlayer(audioUrl) {
+            const audioPlayer = document.getElementById('audioPlayer');
+            const audioElement = document.getElementById('audioElement');
+            
+            audioElement.src = audioUrl;
+            audioPlayer.style.display = 'block';
+        }
+
+        // Enter key support
+        document.getElementById('inputText').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                document.getElementById('translateBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>

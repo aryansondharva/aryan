@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Persona Voice Agent - N9NE AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        :root {
+            --primary-color: #ffffff;
+            --primary-gradient: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            --secondary-gradient: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+            --background: #1a1a1a;
+            --surface: rgba(45, 55, 72, 0.8);
+            --surface-glass: rgba(255, 255, 255, 0.05);
+            --user-bubble: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            --agent-bubble: rgba(45, 55, 72, 0.6);
+            --text-primary: #ffffff;
+            --text-secondary: #a0aec0;
+            --text-light: rgba(255, 255, 255, 0.95);
+            --shadow-soft: 0 10px 40px rgba(0, 0, 0, 0.3);
+            --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.5);
+            --border-glass: rgba(255, 255, 255, 0.1);
+            --record-gradient: linear-gradient(135deg, #4299e1 0%, #3182ce 100%);
+            --nobita-color: #ffd700;
+            --shinchan-color: #ff6b6b;
+            --girl-color: #ff69b4;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            position: relative;
+            overflow: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(66, 153, 225, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(49, 130, 206, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(45, 55, 72, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .container {
+            background: var(--surface);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 48px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-glass);
+            max-width: 800px;
+            width: 95%;
+            text-align: center;
+            z-index: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--user-bubble);
+            border-radius: 24px 24px 0 0;
+        }
+
+        .header {
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .title-icon {
+            background: var(--user-bubble);
+            border-radius: 16px;
+            padding: 12px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 24px rgba(66, 153, 225, 0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .persona-section {
+            margin-bottom: 40px;
+        }
+
+        .persona-section h3 {
+            color: var(--text-primary);
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .persona-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .persona-card {
+            background: var(--surface-glass);
+            border: 2px solid var(--border-glass);
+            border-radius: 20px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .persona-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .persona-card:hover::before {
+            left: 100%;
+        }
+
+        .persona-card.active {
+            border-color: #4299e1;
+            background: rgba(66, 153, 225, 0.1);
+            transform: scale(1.05);
+            box-shadow: 0 8px 32px rgba(66, 153, 225, 0.3);
+        }
+
+        .persona-card.nobita.active {
+            border-color: var(--nobita-color);
+            background: rgba(255, 215, 0, 0.1);
+            box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
+        }
+
+        .persona-card.shinchan.active {
+            border-color: var(--shinchan-color);
+            background: rgba(255, 107, 107, 0.1);
+            box-shadow: 0 8px 32px rgba(255, 107, 107, 0.3);
+        }
+
+        .persona-card.girl.active {
+            border-color: var(--girl-color);
+            background: rgba(255, 105, 180, 0.1);
+            box-shadow: 0 8px 32px rgba(255, 105, 180, 0.3);
+        }
+
+        .persona-emoji {
+            font-size: 3rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .persona-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+
+        .persona-description {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        .chat-section {
+            margin-bottom: 40px;
+        }
+
+        .chat-container {
+            background: var(--surface-glass);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px;
+            height: 300px;
+            overflow-y: auto;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-container::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+        }
+
+        .message {
+            padding: 12px 16px;
+            border-radius: 16px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            animation: messageSlide 0.3s ease-out;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            background: var(--user-bubble);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.assistant {
+            background: var(--agent-bubble);
+            color: var(--text-primary);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+            border: 1px solid var(--border-glass);
+        }
+
+        .input-section {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 30px;
+            align-items: center;
+        }
+
+        .text-input {
+            flex: 1;
+            padding: 16px 20px;
+            border: 2px solid var(--border-glass);
+            border-radius: 20px;
+            background: var(--surface-glass);
+            color: var(--text-primary);
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: inherit;
+        }
+
+        .text-input:focus {
+            outline: none;
+            background: var(--surface);
+            border-color: rgba(66, 153, 225, 0.5);
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        .text-input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 16px 28px;
+            border: 2px solid var(--border-glass);
+            border-radius: 24px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 140px;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            font-family: inherit;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-icon {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover .btn-icon {
+            transform: scale(1.1);
+        }
+
+        .btn-primary {
+            background: var(--user-bubble);
+            color: var(--text-primary);
+            box-shadow: 0 8px 32px rgba(66, 153, 225, 0.4);
+            border-color: rgba(66, 153, 225, 0.3);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            box-shadow: 0 8px 32px rgba(45, 55, 72, 0.4);
+            border-color: var(--border-glass);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 48px rgba(66, 153, 225, 0.6);
+            border-color: rgba(66, 153, 225, 0.5);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .record-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            background: var(--record-gradient);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+            font-size: 1.5rem;
+        }
+
+        .record-btn:hover {
+            transform: scale(1.08) translateY(-2px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .record-btn.recording {
+            animation: recordPulse 2s infinite;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        }
+
+        @keyframes recordPulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4), 0 8px 32px rgba(0, 0, 0, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 0 20px rgba(239, 68, 68, 0), 0 8px 32px rgba(0, 0, 0, 0.2);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0), 0 8px 32px rgba(0, 0, 0, 0.2);
+            }
+        }
+
+        .status {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: var(--surface-glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-glass);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+        }
+
+        .status.processing {
+            background: rgba(66, 153, 225, 0.1);
+            border: 1px solid rgba(66, 153, 225, 0.3);
+            color: #4299e1;
+        }
+
+        .status.success {
+            background: rgba(72, 187, 120, 0.1);
+            border: 1px solid rgba(72, 187, 120, 0.3);
+            color: #48bb78;
+        }
+
+        .status.error {
+            background: rgba(245, 101, 101, 0.1);
+            border: 1px solid rgba(245, 101, 101, 0.3);
+            color: #f56565;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid var(--border-glass);
+            border-radius: 50%;
+            border-top-color: #4299e1;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: var(--surface);
+            border: 1px solid var(--border-glass);
+            color: var(--text-secondary);
+            padding: 12px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .back-btn:hover {
+            background: var(--user-bubble);
+            color: white;
+            text-decoration: none;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 32px 24px;
+                margin: 20px;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .persona-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .controls {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="back-btn">
+        <i class="fas fa-arrow-left"></i>
+        Back to Main
+    </a>
+
+    <div class="container">
+        <div class="header">
+            <h1>
+                <div class="title-icon">
+                    <i class="fas fa-theater-masks"></i>
+                </div>
+                Persona Voice Agent
+            </h1>
+            <p class="subtitle">Choose your AI personality and have natural conversations with unique character responses!</p>
+        </div>
+
+        <div class="persona-section">
+            <h3><i class="fas fa-users"></i> Choose Your AI Persona</h3>
+            <div class="persona-grid">
+                <div class="persona-card girl active" data-persona="girl">
+                    <span class="persona-emoji">👧</span>
+                    <div class="persona-name">Friendly Girl</div>
+                    <div class="persona-description">Sweet and Helpful Voice</div>
+                </div>
+                <div class="persona-card nobita" data-persona="nobita">
+                    <span class="persona-emoji">😴</span>
+                    <div class="persona-name">Nobita</div>
+                    <div class="persona-description">Tired Student Who Needs Doraemon's Help</div>
+                </div>
+                <div class="persona-card shinchan" data-persona="shinchan">
+                    <span class="persona-emoji">🤪</span>
+                    <div class="persona-name">Shinchan</div>
+                    <div class="persona-description">Mischievous Kid with Funny Attitude</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="chat-section">
+            <div class="chat-container" id="chatContainer">
+                <div class="message assistant" id="welcomeMessage">
+                    Hi there! I'm so happy to meet you! I'm here to help with anything you need. What would you like to know today?
+                </div>
+            </div>
+            
+            <div class="input-section">
+                <input type="text" id="textInput" class="text-input" placeholder="Type your message here..." />
+                <button class="btn btn-primary" id="sendBtn">
+                    <i class="fas fa-paper-plane btn-icon"></i>
+                    Send
+                </button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="record-btn" id="recordBtn">
+                <i class="fas fa-microphone"></i>
+            </button>
+        </div>
+
+        <div class="status" id="status">
+            <i class="fas fa-info-circle" style="margin-right: 8px;"></i>
+            Ready to chat! Choose a persona above, then type a message or click the microphone to speak.
+        </div>
+    </div>
+
+    <script>
+        let selectedPersona = 'girl';
+        let isRecording = false;
+        let mediaRecorder;
+        let audioChunks = [];
+        let ws = null;
+        let audioContext;
+        let mediaStream;
+        let processor;
+        let audioQueue = [];
+        let isPlaying = false;
+
+        // DOM elements
+        const personaCards = document.querySelectorAll('.persona-card');
+        const chatContainer = document.getElementById('chatContainer');
+        const textInput = document.getElementById('textInput');
+        const sendBtn = document.getElementById('sendBtn');
+        const recordBtn = document.getElementById('recordBtn');
+        const status = document.getElementById('status');
+        const welcomeMessage = document.getElementById('welcomeMessage');
+
+        // Persona data
+        const personas = {
+            girl: {
+                greeting: "Hi there! I'm so happy to meet you! I'm here to help with anything you need. What would you like to know today?",
+                color: "#ff69b4"
+            },
+            nobita: {
+                greeting: "Ugh... I'm so tired... Doraemon, where are you? I need help with everything! But I guess I can try to help you too...",
+                color: "#ffd700"
+            },
+            shinchan: {
+                greeting: "Hiya! I'm Shinchan! *does butt dance* Want to play? I know lots of funny jokes and dances! Hehe!",
+                color: "#ff6b6b"
+            }
+        };
+
+        // Persona selection
+        personaCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Remove active class from all cards
+                personaCards.forEach(c => c.classList.remove('active'));
+                // Add active class to clicked card
+                card.classList.add('active');
+                
+                // Update selected persona
+                selectedPersona = card.dataset.persona;
+                
+                // Update welcome message
+                welcomeMessage.textContent = personas[selectedPersona].greeting;
+                
+                showStatus(`Switched to ${card.querySelector('.persona-name').textContent} persona!`, 'success');
+            });
+        });
+
+        // Send text message
+        const sendMessage = async () => {
+            const text = textInput.value.trim();
+            if (!text) return;
+
+            // Add user message to chat
+            addMessage(text, 'user');
+            textInput.value = '';
+            sendBtn.disabled = true;
+
+            showStatus('Processing your message...', 'processing');
+
+            try {
+                const response = await fetch('/persona_chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: text,
+                        persona: selectedPersona
+                    })
+                });
+
+                const result = await response.json();
+                
+                if (response.ok && result.response) {
+                    addMessage(result.response, 'assistant');
+                    
+                    // Play audio if available
+                    if (result.audio) {
+                        playAudio(result.audio);
+                    }
+                    
+                    showStatus('Response received!', 'success');
+                } else {
+                    throw new Error(result.error || 'Failed to get response');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage('Sorry, I encountered an error. Please try again.', 'assistant');
+                showStatus('Error occurred. Please try again.', 'error');
+            } finally {
+                sendBtn.disabled = false;
+            }
+        };
+
+        // Add message to chat
+        const addMessage = (text, type) => {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+            messageDiv.textContent = text;
+            chatContainer.appendChild(messageDiv);
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        };
+
+        // Play audio
+        const playAudio = async (base64Audio) => {
+            try {
+                if (!audioContext) {
+                    audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                }
+
+                const audioData = Uint8Array.from(atob(base64Audio), c => c.charCodeAt(0)).buffer;
+                const buffer = await audioContext.decodeAudioData(audioData);
+                
+                const source = audioContext.createBufferSource();
+                source.buffer = buffer;
+                source.connect(audioContext.destination);
+                source.start();
+            } catch (error) {
+                console.error('Error playing audio:', error);
+            }
+        };
+
+        // Voice recording
+        const startRecording = async () => {
+            try {
+                mediaStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioContext = new (window.AudioContext || window.webkitAudioContext)({
+                    sampleRate: 16000,
+                });
+
+                const source = audioContext.createMediaStreamSource(mediaStream);
+                processor = audioContext.createScriptProcessor(4096, 1, 1);
+                source.connect(processor);
+                processor.connect(audioContext.destination);
+                
+                processor.onaudioprocess = (e) => {
+                    const inputData = e.inputBuffer.getChannelData(0);
+                    const pcmData = new Int16Array(inputData.length);
+                    for (let i = 0; i < inputData.length; i++) {
+                        pcmData[i] = Math.max(-1, Math.min(1, inputData[i])) * 32767;
+                    }
+                    if (ws && ws.readyState === WebSocket.OPEN) {
+                        ws.send(pcmData.buffer);
+                    }
+                };
+
+                // WebSocket connection
+                const wsProtocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+                ws = new WebSocket(`${wsProtocol}//${window.location.host}/ws/persona`);
+
+                ws.onmessage = (event) => {
+                    const msg = JSON.parse(event.data);
+                    if (msg.type === "assistant") {
+                        addMessage(msg.text, "assistant");
+                    } else if (msg.type === "final") {
+                        addMessage(msg.text, "user");
+                    } else if (msg.type === "audio") {
+                        playAudio(msg.b64);
+                    }
+                };
+
+                // Send persona info
+                ws.onopen = () => {
+                    ws.send(JSON.stringify({
+                        type: 'persona_config',
+                        persona: selectedPersona
+                    }));
+                };
+
+                isRecording = true;
+                recordBtn.classList.add("recording");
+                recordBtn.innerHTML = '<i class="fas fa-stop"></i>';
+                showStatus("Listening... Click stop when finished.", 'processing');
+                
+            } catch (error) {
+                console.error("Could not start recording:", error);
+                showStatus("Microphone access denied or not available.", 'error');
+            }
+        };
+
+        const stopRecording = () => {
+            if (processor) processor.disconnect();
+            if (mediaStream) mediaStream.getTracks().forEach(track => track.stop());
+            if (ws) ws.close();
+
+            isRecording = false;
+            recordBtn.classList.remove("recording");
+            recordBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+            showStatus("Ready to chat!", '');
+        };
+
+        // Show status
+        const showStatus = (message, type = '') => {
+            status.className = `status ${type}`;
+            if (type === 'processing') {
+                status.innerHTML = `<span class="loading"></span>${message}`;
+            } else {
+                const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle';
+                status.innerHTML = `<i class="fas fa-${icon}" style="margin-right: 8px;"></i>${message}`;
+            }
+        };
+
+        // Event listeners
+        sendBtn.addEventListener('click', sendMessage);
+        
+        textInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !sendBtn.disabled) {
+                sendMessage();
+            }
+        });
+
+        recordBtn.addEventListener('click', () => {
+            if (isRecording) {
+                stopRecording();
+            } else {
+                startRecording();
+            }
+        });
+
+        // Initialize
+        showStatus("Ready to chat! Choose a persona above, then type a message or click the microphone to speak.", '');
+    </script>
+</body>
+</html>
