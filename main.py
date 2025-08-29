@@ -28,9 +28,17 @@ templates = Jinja2Templates(directory="templates")
 
 
 @app.get("/")
+@app.head("/")
 async def home(request: Request):
     """Serves the main HTML page."""
     return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/health")
+@app.head("/health")
+async def health_check():
+    """Health check endpoint for deployment platforms."""
+    return {"status": "healthy", "message": "Voice Agent API is running"}
 
 
 @app.get("/multilingual-voice-agent")
