@@ -488,7 +488,7 @@ import os
 import uvicorn
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", 0000))
     print(f"Starting FastAPI server on 0.0.0.0:{port}")
     print(f"Environment PORT: {os.environ.get('PORT', 'Not set')}")
     
