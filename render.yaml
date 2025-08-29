@@ -8,12 +8,6 @@ services:
     envVars:
       - key: PYTHON_VERSION
         value: 3.9.18
-      - key: GEMINI_API_KEY
-        sync: false
-      - key: ASSEMBLYAI_API_KEY
-        sync: false
-      - key: MURF_API_KEY
-        sync: false
     disk:
       name: uploads
       mountPath: /opt/render/project/src/uploads
