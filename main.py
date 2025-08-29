@@ -488,18 +488,25 @@ import json
 import os
 import uvicorn
 
-if __name__ == "__main__":
+def start_server():
+    """Start the FastAPI server with proper configuration for Render."""
     port = int(os.environ.get("PORT", 8000))
-    print(f"Starting server on 0.0.0.0:{port}")
-    try:
-        uvicorn.run(
-            "main:app", 
-            host="0.0.0.0", 
-            port=port,
-            log_level="info",
-            access_log=True,
-            reload=False
-        )
-    except Exception as e:
-        print(f"Failed to start server: {e}")
-        raise
+    host = "0.0.0.0"
+    
+    print(f"Starting FastAPI server on {host}:{port}")
+    print(f"Environment PORT: {os.environ.get('PORT', 'Not set')}")
+    
+    config = uvicorn.Config(
+        app=app,
+        host=host,
+        port=port,
+        log_level="info",
+        access_log=True,
+        loop="asyncio"
+    )
+    
+    server = uvicorn.Server(config)
+    server.run()
+
+if __name__ == "__main__":
+    start_server()
