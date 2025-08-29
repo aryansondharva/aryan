@@ -9,11 +9,14 @@ logger = logging.getLogger(__name__)
 def _get_configured_model():
     """Get a configured Gemini model with API key from config."""
     api_key = config.get_api_key("GEMINI_API_KEY")
-    if not api_key:
+    if not api_key or not api_key.strip():
         raise Exception("GEMINI_API_KEY not configured. Please set it in the configuration.")
     
-    genai.configure(api_key=api_key)
-    return genai.GenerativeModel('gemini-1.5-flash')
+    try:
+        genai.configure(api_key=api_key)
+        return genai.GenerativeModel('gemini-1.5-flash')
+    except Exception as e:
+        raise Exception(f"Failed to configure Gemini model: {str(e)}")
 
 # Supported languages with their codes
 SUPPORTED_LANGUAGES = {
@@ -59,7 +62,14 @@ def translate_text(text: str, target_language: str) -> Dict[str, str]:
         """
         
         response = model.generate_content(prompt)
+        
+        if not response or not response.text:
+            raise Exception("Empty response from Gemini API")
+            
         translated_text = response.text.strip()
+        
+        if not translated_text:
+            raise Exception("Translation returned empty text")
         
         return {
             "success": True,
