@@ -480,17 +480,24 @@ async def get_api_keys_status():
         logging.error(f"Error getting API keys status: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-
 # Add JSON import for persona websocket
 import json
 
 # Render deployment configuration
 import os
 import uvicorn
+from fastapi import FastAPI
+
+# Create FastAPI app instance
+app = FastAPI()
+
+@app.get("/")
+def root():
+    return {"message": "Hello from FastAPI on Render!"}
 
 def start_server():
     """Start the FastAPI server with proper configuration for Render."""
-    port = int(os.environ.get("PORT", 8000))
+    port = int(os.environ.get("PORT", 8000))  # Use Render's PORT or fallback to 8000
     host = "0.0.0.0"
     
     print(f"Starting FastAPI server on {host}:{port}")
