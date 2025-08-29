@@ -483,20 +483,4 @@ async def get_api_keys_status():
 # Add JSON import for persona websocket
 import json
 
-# Render deployment configuration
-import os
-import uvicorn
-
-if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 0000))
-    print(f"Starting FastAPI server on 0.0.0.0:{port}")
-    print(f"Environment PORT: {os.environ.get('PORT', 'Not set')}")
-    
-    uvicorn.run(
-        "main:app",
-        host="0.0.0.0",
-        port=port,
-        log_level="info",
-        access_log=True,
-        reload=False
-    )
+# Note: Server startup is handled by start.py for Render deployment
