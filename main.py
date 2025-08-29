@@ -490,4 +490,16 @@ import uvicorn
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    print(f"Starting server on 0.0.0.0:{port}")
+    try:
+        uvicorn.run(
+            "main:app", 
+            host="0.0.0.0", 
+            port=port,
+            log_level="info",
+            access_log=True,
+            reload=False
+        )
+    except Exception as e:
+        print(f"Failed to start server: {e}")
+        raise
