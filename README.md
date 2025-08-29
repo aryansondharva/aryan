@@ -315,4 +315,4 @@ uvicorn main:app --reload
 
 ---
 
-**Built with ❤️ for next-generation conversational AI with anime-inspired personalities**
+**Built with ❤️ BY ARYAN SONDHARVA**
