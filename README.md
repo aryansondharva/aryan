@@ -1,157 +1,267 @@
-# N9NE-AI - Advanced Multilingual Voice Agent & Data Analysis Platform
+# 🚀 N9NE-AI - Advanced Multilingual Voice Agent & Data Analysis Platform
+
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![WebSocket](https://img.shields.io/badge/WebSocket-Real--time-green.svg)](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 
 A sophisticated **AI-powered conversational platform** that combines intelligent data analysis, multilingual voice translation, and persona-based voice interactions. Upload documents, analyze data, and interact through voice with customizable AI personas including anime characters like Nobita and Shinchan.
 
-## 🚀 What It Does
+## 📋 Table of Contents
 
-**Core Capabilities**: 
-- **Intelligent Data Analysis**: Upload CSV, PDF, or Excel files for AI-powered insights and conversational analysis
-- **Real-time Voice Interaction**: Natural speech-to-text and text-to-speech conversations with persona support
-- **Multilingual Voice Translation**: Speak in one language, hear responses in another with customizable voice personas
-- **AI Persona System**: Choose from different AI characters (Nobita, Shinchan, Friendly Girl) with unique personalities
+- [✨ Features](#-features)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [🚀 Quick Start](#-quick-start)
+- [⚙️ Configuration](#️-configuration)
+- [📁 Project Structure](#-project-structure)
+- [🎯 Usage Guide](#-usage-guide)
+- [🌐 API Endpoints](#-api-endpoints)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
-### Example Interactions
+## ✨ Features
+
+### 🎯 Core Capabilities
+- **📊 Intelligent Data Analysis**
+  - Upload and analyze CSV, PDF, or Excel files
+  - AI-powered insights using Google Gemini
+  - Interactive data exploration through natural language
+  - Real-time business intelligence and trend analysis
+
+- **🎤 Real-time Voice Interaction**
+  - Advanced speech-to-text using AssemblyAI streaming
+  - High-quality text-to-speech with Murf AI
+  - WebSocket-based low-latency communication
+  - Voice activity detection and audio processing
+
+- **🌍 Multilingual Support**
+  - Real-time translation between 12+ languages
+  - Support for English, Japanese, Spanish, French, German, Italian, Portuguese, Russian, Chinese, Korean, Hindi, Arabic
+  - Cultural context awareness in translations
+  - Language detection capabilities
+
+- **🎭 AI Persona System**
+  - **Nobita**: Tired student character with authentic anime personality
+  - **Shinchan**: Mischievous 5-year-old with playful responses
+  - **Friendly Girl**: Sweet and helpful conversational partner
+  - Unique voice characteristics and response patterns for each persona
+
+### 🎬 Example Interactions
 
 **Data Analysis Flow:**
-👤 **User**: "Analyze this sales report."  
-🤖 **Kiya**: "Your sales grew by 18% in Q2, with the highest increase in North America."  
-👤 **User**: "Which region performed worst?"  
-🤖 **Kiya**: "Europe saw a 5% decline in sales this quarter."
+```
+👤 User: "Analyze this sales report."
+🤖 Kiya: "Your sales grew by 18% in Q2, with the highest increase in North America."
+👤 User: "Which region performed worst?"
+🤖 Kiya: "Europe saw a 5% decline in sales this quarter."
+```
 
 **Persona Interaction (Nobita):**
-👤 **User**: "What is 2+2?"  
-😴 **Nobita**: "Ugh, I'm so tired of math problems! Doraemon, where are you? I need your calculator gadget! *sigh* But I guess I have to do this myself... 2 plus 2 equals 4. There, I answered it! Can I take a nap now?"
+```
+👤 User: "What is 2+2?"
+😴 Nobita: "Ugh, I'm so tired of math problems! Doraemon, where are you? 
+          I need your calculator gadget! *sigh* But I guess I have to do 
+          this myself... 2 plus 2 equals 4. There, I answered it! 
+          Can I take a nap now?"
+```
 
 **Multilingual Translation:**
-👤 **User**: "Hello, how are you?" (English)  
-🤪 **Shinchan**: "こんにちは、元気ですか？" (Japanese with playful personality)
+```
+👤 User: "Hello, how are you?" (English)
+🤪 Shinchan: "こんにちは、元気ですか？" (Japanese with playful personality)
+```
 
-## ✨ Key Features
-
-### Core Functionality
-- **🎤 Real-time Voice Input**: Advanced speech-to-text using AssemblyAI
-- **🔊 AI Persona Voice Output**: Text-to-speech with character-based responses
-- **🌍 Multilingual Support**: Translation between multiple languages
-- **📊 Intelligent Data Processing**: CSV, PDF, Excel analysis with AI insights
-- **💬 Conversational AI**: Context-aware dialogue powered by Google Gemini
-- **🎭 AI Personas**: Unique character personalities (Nobita, Shinchan, Friendly Girl)
-
-### Advanced Features
-- **📱 Modern Responsive UI**: Beautiful glass-morphism design with dark theme
-- **💾 Chat History Management**: Persistent conversation storage with sidebar
-- **🔄 Real-time Updates**: WebSocket-based live communication
-- **📈 Business Intelligence**: Automated insights and trend analysis
-- **🎯 Context-aware Responses**: Data-driven conversational AI
-- **⚙️ Dynamic Configuration**: Runtime API key management
+### 🌟 Advanced Features
+- **📱 Modern Glass-morphism UI**: Beautiful dark theme with responsive design
+- **💾 Persistent Chat History**: Save and manage multiple conversation sessions
+- **🔄 Real-time WebSocket Communication**: Low-latency voice and text processing
+- **📈 Business Intelligence**: Automated insights and trend analysis from data
+- **🎯 Context-aware AI**: Data-driven conversational responses
+- **⚙️ Dynamic Configuration**: Runtime API key management through web interface
+- **🎵 Audio Queue Management**: Seamless audio playback with voice personas
+- **📊 Multi-format Data Support**: CSV, PDF, Excel file processing
 
 ## 🛠️ Tech Stack
 
-### Backend
-- **FastAPI**: High-performance async web framework
-- **WebSocket**: Real-time bidirectional communication
-- **Python**: Core application logic
-- **Uvicorn**: ASGI server for production deployment
+### 🖥️ Backend Architecture
+- **FastAPI** - High-performance async web framework with automatic API documentation
+- **WebSocket** - Real-time bidirectional communication for voice streaming
+- **Python 3.9+** - Core application logic with async/await support
+- **Uvicorn** - Lightning-fast ASGI server for production deployment
+- **Jinja2** - Template engine for dynamic HTML rendering
 
-### AI & ML Services
-- **Google Gemini 1.5 Flash**: Large Language Model for analysis and conversation
-- **AssemblyAI**: Advanced speech-to-text transcription
-- **Murf AI**: High-quality text-to-speech with voice personas
+### 🤖 AI & ML Services
+- **Google Gemini 1.5 Flash** - Large Language Model for conversation and data analysis
+- **AssemblyAI Streaming** - Real-time speech-to-text transcription with voice activity detection
+- **Murf AI** - High-quality text-to-speech with multiple voice personas and languages
 
-### Data Processing
-- **pandas**: Data manipulation and analysis
-- **pdfplumber**: PDF text and table extraction
-- **openpyxl & xlrd**: Excel file processing
+### 📊 Data Processing
+- **pandas** - Advanced data manipulation and statistical analysis
+- **pdfplumber** - PDF text extraction and table parsing
+- **openpyxl & xlrd** - Excel file processing (.xlsx, .xls)
+- **python-multipart** - File upload handling
 
-### Frontend
-- **Modern HTML5/CSS3**: Responsive design with glass-morphism effects
-- **Vanilla JavaScript**: Real-time UI updates and WebSocket handling
-- **Custom CSS**: Professional dark theme with animations
+### 🎨 Frontend Technologies
+- **Modern HTML5/CSS3** - Responsive design with glass-morphism effects
+- **Vanilla JavaScript** - Real-time UI updates and WebSocket handling
+- **Web Audio API** - Audio processing and playback management
+- **LocalStorage** - Client-side data persistence for chat history and settings
 
-## 📋 Setup Instructions
+## 🚀 Quick Start
 
-### 1. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+### Prerequisites
+- **Python 3.9+** installed on your system
+- **Git** for cloning the repository
+- API keys for the required services (can be configured later)
 
-### 2. Environment Variables (Optional)
-Create a `.env` file with your API keys, or configure them through the web interface:
-```env
-GEMINI_API_KEY=your_gemini_api_key_here
-ASSEMBLYAI_API_KEY=your_assemblyai_api_key_here
-MURF_API_KEY=your_murf_api_key_here
-```
+### Installation
 
-### 3. Run the Application
+1. **Clone the repository**
+   ```bash
+   git clone <repository-url>
+   cd N9NE-AI
+   ```
 
-**Local Development:**
+2. **Create virtual environment (recommended)**
+   ```bash
+   python -m venv venv
+   # Windows
+   venv\Scripts\activate
+   # macOS/Linux
+   source venv/bin/activate
+   ```
+
+3. **Install dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Set up environment variables (optional)**
+   Create a `.env` file in the root directory:
+   ```env
+   # API Keys (can also be configured via web interface)
+   GEMINI_API_KEY=your_gemini_api_key_here
+   ASSEMBLYAI_API_KEY=your_assemblyai_api_key_here
+   MURF_API_KEY=your_murf_api_key_here
+   
+   # Optional Configuration
+   DEBUG=True
+   HOST=0.0.0.0
+   PORT=8000
+   ```
+
+### Running the Application
+
+**Development Mode:**
 ```bash
 uvicorn main:app --reload
 ```
 
-**Production (Render Deployment):**
+**Production Mode:**
 ```bash
 python start.py
 ```
 
-Visit `http://localhost:8000` to access the application.
+Access the application at `http://localhost:8000`
 
-### 4. Configure API Keys
+## ⚙️ Configuration
+
+### API Keys Setup
 After starting the application:
-1. Click the **Settings** button in the sidebar
-2. Enter your API keys for Gemini, AssemblyAI, and Murf
+1. Click the **Settings** ⚙️ button in the sidebar
+2. Enter your API keys for the required services:
+   - **Gemini API Key**: For AI conversation and data analysis
+   - **AssemblyAI API Key**: For speech-to-text transcription
+   - **Murf API Key**: For text-to-speech voice generation
 3. Save the configuration
 4. Start using the voice agent!
 
-## 🎯 How to Use
+### Required API Keys
 
-### Main Interface
-1. **Upload Data**: Click the "+" button to upload CSV, PDF, or Excel files
-2. **Get Insights**: Kiya automatically analyzes and provides key findings
-3. **Voice Interaction**: Click the microphone to start voice conversations
-4. **Text Chat**: Type questions in the input field for text-based interaction
+| Service | Purpose | Get API Key |
+|---------|---------|-------------|
+| **Google Gemini** | AI conversation & data analysis | [Google AI Studio](https://makersuite.google.com/app/apikey) |
+| **AssemblyAI** | Speech-to-text transcription | [AssemblyAI Dashboard](https://www.assemblyai.com/dashboard/) |
+| **Murf AI** | Text-to-speech voice generation | [Murf AI Platform](https://murf.ai/) |
 
-### Persona Voice Agent
-1. Visit `/persona-voice-agent` for character-based interactions
-2. Choose from available personas (Nobita, Shinchan, Friendly Girl)
-3. Enjoy unique personality-driven responses
+## 🎯 Usage Guide
 
-### Multilingual Voice Agent
-1. Visit `/multilingual-voice-agent` for translation features
-2. Enter text or record voice in one language
-3. Select target language and persona
-4. Receive translated response with character voice
+### 🏠 Main Interface
+1. **📊 Upload Data**: Click the "+" button to upload CSV, PDF, or Excel files
+2. **🔍 Get AI Insights**: Kiya automatically analyzes and provides key findings
+3. **🎤 Voice Chat**: Click the microphone to start real-time voice conversations
+4. **💬 Text Chat**: Type messages in the input field for text-based interaction
+5. **💾 Chat History**: Access previous conversations from the sidebar
+
+### 🎭 Persona Voice Agent (`/persona-voice-agent`)
+1. Choose from available AI personas:
+   - **😴 Nobita**: Tired student who needs Doraemon's help
+   - **🤪 Shinchan**: Mischievous 5-year-old with playful attitude
+   - **👧 Friendly Girl**: Sweet and helpful conversational partner
+2. Experience unique personality-driven responses and voice characteristics
+3. Real-time voice interaction with character-specific behaviors
+
+### 🌍 Multilingual Voice Agent (`/multilingual-voice-agent`)
+1. Enter text or record voice in your preferred language
+2. Select target language from 12+ supported options
+3. Choose voice persona for the translated response
+4. Receive real-time translation with character voice output
+
+## 🌐 API Endpoints
+
+### Core Endpoints
+- `GET /` - Main application interface
+- `GET /health` - Health check endpoint
+- `GET /multilingual-voice-agent` - Multilingual voice interface
+- `GET /persona-voice-agent` - Persona-based voice interface
+
+### WebSocket Endpoints
+- `WS /ws` - Real-time voice communication for main interface
+- `WS /ws/persona` - Real-time voice communication with persona support
+
+### API Endpoints
+- `POST /upload` - File upload and analysis (CSV, PDF, Excel)
+- `POST /chat` - Text-based chat messages
+- `POST /persona_chat` - Text-based chat with persona support
+- `POST /multilingual_voice` - Text translation with voice generation
+- `POST /process_voice_translation` - Voice recording translation
+- `POST /config/api-keys` - Update API keys configuration
+- `GET /config/api-keys/status` - Check API keys status
+- `GET /multilingual-voice/config` - Get available languages and personas
+- `GET /persona-voice/config` - Get available personas information
 
 ## 📁 Project Structure
 
 ```
 N9NE-AI/
 ├── main.py                          # FastAPI application with WebSocket support
-├── start.py                         # Production startup script for Render
-├── config.py                       # Dynamic API configuration management
+├── start.py                         # Production startup script for Render deployment
+├── config.py                        # Dynamic API configuration management
 ├── personas.py                      # AI persona definitions and system instructions
 ├── schemas.py                       # Pydantic data models
 ├── requirements.txt                 # Python dependencies
 ├── render.yaml                      # Render deployment configuration
-├── .gitignore                      # Git ignore rules
+├── .gitignore                       # Git ignore patterns
+├── README.md                        # Project documentation
+│
 ├── services/                        # Core service modules
 │   ├── __init__.py                 # Package initialization
 │   ├── data_processor.py           # File processing and data analysis
-│   ├── llm.py                      # Google Gemini AI integration (Kiya assistant)
+│   ├── llm.py                      # Google Gemini integration
 │   ├── stt.py                      # AssemblyAI speech-to-text
-│   ├── tts.py                      # Murf text-to-speech
+│   ├── tts.py                      # Murf AI text-to-speech
 │   ├── translator.py               # Multilingual translation service
 │   └── voice_changer.py            # Voice persona and effects
+│
 ├── templates/                       # HTML templates
 │   ├── index.html                  # Main application interface
-│   ├── multilingual_voice_agent.html # Multilingual voice interface
-│   ├── persona_voice_agent.html    # Persona-based voice interface
-│   └── logo/                       # Logo assets
-│       └── 1.png                   # Application logo
-├── static/                         # Static assets
+│   ├── multilingual_voice_agent.html # Multilingual translation page
+│   └── persona_voice_agent.html    # Persona interaction page
+│
+├── static/                          # Static assets
 │   └── script.js                   # Frontend JavaScript logic
-└── uploads/                        # File upload and audio storage
-    └── *.wav                      # Generated audio files
+│
+└── uploads/                         # File upload directory (auto-created)
 ```
 
 ## 🔧 API Endpoints
@@ -187,7 +297,7 @@ N9NE-AI/
   - Reluctant but eventually provides answers
   - Ends responses wanting to sleep or rest
   
-- 🤪 **Shinchan**: Mischievous 5-year-old with funny attitude
+- 🤪 **Shinchan**: Mischievous 5-year-old with playful attitude
   - Playful, cheeky, and energetic
   - Makes silly jokes and references to "butt dance"
   - Uses simple but surprisingly mature language
