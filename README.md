@@ -4,6 +4,7 @@
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![WebSocket](https://img.shields.io/badge/WebSocket-Real--time-green.svg)](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
+[![Murf AI](https://img.shields.io/badge/Murf%20AI-Voice%20Synthesis-orange.svg)](https://murf.ai/)
 
 A sophisticated **AI-powered conversational platform** that combines intelligent data analysis, multilingual voice translation, and persona-based voice interactions. Upload documents, analyze data, and interact through voice with customizable AI personas including anime characters like Nobita and Shinchan.
 
