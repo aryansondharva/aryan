@@ -323,10 +323,9 @@ N9NE-AI/
 - And more languages supported through translation service
 
 ### Voice Personas (Multilingual Agent)
-- 👤 **Normal**: Standard conversational voice
+
 - 🧒 **Shinchan**: Playful, energetic child-like voice
-- 🤖 **Robot**: Mechanical, robotic voice
-- 🎭 **Deep Voice**: Deep, authoritative voice
+- 😴 **Nobita**: Tired student who needs Doraemon's help
 - 👧 **Girl**: Sweet, cheerful girl voice
 
 ## 💡 Why This Is Impressive
