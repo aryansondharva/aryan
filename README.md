@@ -1,4 +1,4 @@
-# 🚀 N9NE-AI - Advanced Multilingual Voice Agent & Data Analysis Platform
+# 🚀 N9NE-AI 
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
