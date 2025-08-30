@@ -122,7 +122,7 @@ A sophisticated **AI-powered conversational platform** that combines intelligent
 
 1. **Clone the repository**
    ```bash
-   git clone <(https://github.com/aryansondharva/aryan)>
+   git clone https://github.com/aryansondharva/aryan
    cd N9NE-AI
    ```
 
