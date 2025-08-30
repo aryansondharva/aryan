@@ -1,3 +1,7 @@
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/your-logo-id" alt="N9NE Logo" width="200"/>
+</div>
+
 # 🚀 N9NE-AI 
 
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
