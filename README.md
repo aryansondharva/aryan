@@ -1,8 +1,8 @@
 <div align="center">
-  <img src="./static/logos/n9ne-logo-.png" alt="N9NE Logo" width="200"/>
+  <img src="./static/logos/n9ne-logo.png" alt="N9NE Logo" width="200"/>
 </div>
 
- 
+
 [![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-Latest-009688.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
