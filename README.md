@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="./static/logos/n9ne-logo.png" alt="N9NE Logo" width="200"/>
+  <img src="./static/logos/n9ne-logo-.png" alt="N9NE Logo" width="200"/>
 </div>
 
  
